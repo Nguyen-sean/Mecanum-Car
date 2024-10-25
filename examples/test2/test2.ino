@@ -16,29 +16,40 @@ void loop(void)
     speed2 = map(sGamepad.Get_RAD_Joy_R(), 0, 255, 0, 70);
 
     getData();
-
-    // switch (leftJoyBTT.get_bt_Stt())
-    // {
-    // case leftJoyBTT.ON:
-    //     rotation(left, 80);
-    //     break;
-
-    // case leftJoyBTT.OFF:
-    //     // stop();
-    //     break;
-
-    // default:
-    //     break;
-    // }
-    if (joyStick2_RAD > 50)
+    if (joyStick2_RAD > 10)
     {
         switch (joyStick2.getDir())
         {
         case joyStick2.W:
-            rotation(left, speed2);
+            if (joyStick2.getDir() == joyStick2.NW)
+                mov_ard_bd(front, left);
+            else if (joyStick2.getDir() == joyStick2.SW)
+                mov_ard_bd(back, left);
+            else
+                rotation(left, speed2);
             break;
+
         case joyStick2.E:
-            rotation(right, speed2);
+            if (joyStick2.getDir() == joyStick2.NE)
+                mov_ard_bd(front, right);
+            else if (joyStick2.getDir() == joyStick2.SW)
+                mov_ard_bd(back, right);
+            else
+                rotation(right, speed2);
+            break;
+
+        case joyStick2.N:
+            if (joyStick2.getDir() == joyStick2.NW)
+                rt_ard_p(front, left);
+            else if (joyStick2.getDir() == joyStick2.NE)
+                rt_ard_p(front, right);
+            break;
+
+        case joyStick2.S:
+            if (joyStick2.getDir() == joyStick2.SW)
+                rt_ard_p(back, left);
+            else if (joyStick2.getDir() == joyStick2.S_E)
+                rt_ard_p(back, right);
             break;
 
         default:
@@ -77,7 +88,9 @@ void loop(void)
         default:
             break;
         }
-    } else {
+    }
+    else
+    {
         stop();
     }
 }
