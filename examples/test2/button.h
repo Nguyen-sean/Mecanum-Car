@@ -8,12 +8,14 @@ DEFINE_TASK_STATE(button){
 };
 
 CREATE_TASK(button)
-/*Add your variable here*/
+
+typedef enum { ON = 20, OFF,} buttonState;
+byte strg_bt = 0;
+uint8_t output_data = 0;
 
 void setup()
 {
-    /*Add your code setup here*/
-    stop();
+    this->resetData();
 }
 
 void loop()
@@ -21,15 +23,21 @@ void loop()
     switch (getState())
     {
     case button_ON:
-        /*code*/
+
+        if (this->strg_bt == 1)
+            this->output_data = ON;
+        else
+            this->output_data = OFF;
+
         kDelay(0);
+
         setState(button_OFF);
+
         break;
 
     case button_OFF:
-        /*code*/
+        this->stop();
         kDelay(0);
-        setState(button_ON);
         break;
 
     default:
@@ -37,10 +45,10 @@ void loop()
     }
 }
 
-void start()
+void read_Button(byte inButton)
 {
-    kxnTaskManager.add(this);
-    setState(button_ON);
+    this->strg_bt = inButton;
+    this->stop();
 }
 
 void stop()
@@ -49,4 +57,18 @@ void stop()
     setStateIdle();
 }
 
+void resetData()
+{
+    this->stop();
+    this->output_data = 0;
+    this->strg_bt = 0;
+    kDelay(0);
+    setStateIdle();
+}
+uint8_t get_bt_Stt()
+{
+    kxnTaskManager.add(this);
+    setState(button_ON);
+    return this->output_data;
+}
 END

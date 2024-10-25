@@ -8,10 +8,7 @@ DEFINE_TASK_STATE(joystick_dir){
 };
 
 CREATE_TASK(joystick_dir)
-/*Add your variable here*/
 
-// const uint8_t count_per_deg = 8;
-// const float per_deg[count_per_deg] = {337.5, 22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5};
 const float per_deg[8] = {337.5, 22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5};
 
 float temp_deg = 0;
@@ -31,7 +28,6 @@ typedef enum
 
 void setup()
 {
-  /*Add your code setup here*/
   this->resetData();
   kDelay(0);
   this->stop();
@@ -78,7 +74,6 @@ void loop()
 }
 
 uint8_t getDir()
-// void getDir_Joystick()
 {
   kxnTaskManager.add(this);
   setState(joystick_dir_ON);
@@ -87,8 +82,6 @@ uint8_t getDir()
 
 void read_Joystick(float deg)
 {
-  /*Add your code setup here*/
-  // this->resetData();
   kDelay(0);
   this->temp_deg = deg;
   stop();

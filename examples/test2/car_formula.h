@@ -7,10 +7,12 @@ void mov_str(bool direct);
 void mov_sdw(bool direct);
 void mov_dia(bool direct, bool side);
 void mov_ard_bd(bool direct, bool side);
-void rotation(bool side, uint8_t speed);
+void rotation(bool side, uint16_t speed);
 void rt_ard_p(bool wd, bool side);
 
 unsigned int speed = 0; // unit: percent (%)
+unsigned int speed2 = 0; // unit: percent (%)
+
 bool forward = 1, backward = 0;
 
 enum
@@ -100,7 +102,7 @@ void mov_ard_bd(bool direct, bool side) // for go cylce 135 to 225
   }
 }
 
-void rotation(bool side, uint8_t speed) // rotate by the stand side
+void rotation(bool side, uint16_t speed) // rotate by the stand side
 {
   myDriver.writeMA(!side, speed);
   myDriver.writeMB(side, speed);
