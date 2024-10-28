@@ -9,7 +9,11 @@ DEFINE_TASK_STATE(button){
 
 CREATE_TASK(button)
 
-typedef enum { ON = 20, OFF,} buttonState;
+typedef enum
+{
+    ON = 30,
+    OFF,
+} buttonState;
 byte strg_bt = 0;
 uint8_t output_data = 0;
 

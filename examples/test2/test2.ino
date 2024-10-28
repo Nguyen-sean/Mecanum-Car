@@ -10,53 +10,66 @@ void loop(void)
 {
     kxnTaskManager.run(millis());
 
+    uint8_t joyStick1_Sens_percent = 90;
+    uint8_t joyStick2_Sens_percent = 10;
+
+    uint8_t joyStick1_Sens_threshhold = map(joyStick1_Sens_percent, 0, 100, 255, 0);
+    uint8_t joyStick2_Sens_threshhold = map(joyStick2_Sens_percent, 0, 100, 255, 0);
+
     uint8_t joyStick1_RAD = sGamepad.Get_RAD_Joy_L();
     uint8_t joyStick2_RAD = sGamepad.Get_RAD_Joy_R();
+
     speed = map(sGamepad.Get_RAD_Joy_L(), 0, 255, 0, 70);
     speed2 = map(sGamepad.Get_RAD_Joy_R(), 0, 255, 0, 70);
 
     getData();
-    if (joyStick2_RAD > 10)
+    if (joyStick2_RAD > joyStick2_Sens_threshhold)
     {
-        switch (joyStick2.getDir())
+            // if (joyStick2.getDir() == joyStick2.E && joyStick1.getDir() == joyStick1.E)
+            //     rotation(right, (speed2 + speed) / 2);
+            // else if (joyStick2.getDir() == joyStick2.W && joyStick1.getDir() == joyStick1.W)
+            //     rotation(left, (speed2 + speed) / 2);
+        // Serial.println(joyStick2.getDir22());
+        switch (joyStick2.getDir22())
         {
-        case joyStick2.W:
-            if (joyStick2.getDir() == joyStick2.NW)
-                mov_ard_bd(front, left);
-            else if (joyStick2.getDir() == joyStick2.SW)
-                mov_ard_bd(back, left);
-            else
-                rotation(left, speed2);
+            // case joyStick2.E:
+            //     rotation(right, speed2);
+            //     break;
+
+            // case joyStick2.W:
+            //     rotation(left, speed2);
+            //     break;
+
+        case joyStick2.WNW:
+            mov_ard_bd(front, left, speed2);
             break;
 
-        case joyStick2.E:
-            if (joyStick2.getDir() == joyStick2.NE)
-                mov_ard_bd(front, right);
-            else if (joyStick2.getDir() == joyStick2.SW)
-                mov_ard_bd(back, right);
-            else
-                rotation(right, speed2);
+        case joyStick2.WSW:
+            mov_ard_bd(back, left, speed2);
             break;
-
-        case joyStick2.N:
-            if (joyStick2.getDir() == joyStick2.NW)
-                rt_ard_p(front, left);
-            else if (joyStick2.getDir() == joyStick2.NE)
-                rt_ard_p(front, right);
+        case joyStick2.ENE:
+            mov_ard_bd(front, right, speed2);
             break;
-
-        case joyStick2.S:
-            if (joyStick2.getDir() == joyStick2.SW)
-                rt_ard_p(back, left);
-            else if (joyStick2.getDir() == joyStick2.S_E)
-                rt_ard_p(back, right);
+        case joyStick2.ESE:
+            mov_ard_bd(back, right, speed2);
             break;
-
+        case joyStick2.NNW:
+            rt_ard_p(front, left, speed2);
+            break;
+        case joyStick2.SSW:
+            rt_ard_p(back, left, speed2);
+            break;
+        case joyStick2.NNE:
+            rt_ard_p(front, right, speed2);
+            break;
+        case joyStick2.SSE:
+            rt_ard_p(back, right, speed2);
         default:
             break;
         }
     }
-    else if (joyStick1_RAD > 10)
+
+    else if (joyStick1_RAD > joyStick1_Sens_threshhold)
     {
         switch (joyStick1.getDir())
         {
@@ -89,6 +102,10 @@ void loop(void)
             break;
         }
     }
+    else if (leftJoyBTT.get_bt_Stt() == leftJoyBTT.ON)
+    rotation(left, 70);
+    else if (rightJoyBTT.get_bt_Stt() == rightJoyBTT.ON)
+    rotation(right, 70);
     else
     {
         stop();
