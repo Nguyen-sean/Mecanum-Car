@@ -19,8 +19,8 @@ void loop(void)
     uint8_t joyStick1_RAD = sGamepad.Get_RAD_Joy_L();
     uint8_t joyStick2_RAD = sGamepad.Get_RAD_Joy_R();
 
-    speed = map(sGamepad.Get_RAD_Joy_L(), 0, 255, 0, 70);
-    speed2 = map(sGamepad.Get_RAD_Joy_R(), 0, 255, 0, 70);
+    speed = map(sGamepad.Get_RAD_Joy_L(), 0, 255, 0, 100);
+    speed2 = map(sGamepad.Get_RAD_Joy_R(), 0, 255, 0, 100);
 
     getData();
     if (joyStick2_RAD > joyStick2_Sens_threshhold)

@@ -30,7 +30,7 @@ void setup_IIC()
 }
 
 void getData()
-{  sGamepad.getdata_Gamepad_I2C();
+{
   leftJoyBTT.read_Button(sGamepad.Get_status_button_90D_Left());
   rightJoyBTT.read_Button(sGamepad.Get_status_button_90D_Right());
 
@@ -43,6 +43,6 @@ void getData()
   // Serial.println(sGamepad.Get_RAD_Joy_R());
 
   sGamepad.Reset_data_Gamepad();
-
+  sGamepad.getdata_Gamepad_I2C();
 
 }

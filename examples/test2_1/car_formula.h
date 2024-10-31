@@ -139,8 +139,8 @@ void rt_ard_p(bool wd, bool side, uint8_t speed) // rotate 135 to 45 degree
 
 void stop()
 {
-  myDriver.writeMA(1, 0);
-  myDriver.writeMB(1, 0);
-  myDriver2.writeMA(1, 0);
-  myDriver2.writeMB(1, 0);
+  myDriver.writeMA(0, 0);
+  myDriver.writeMB(0, 0);
+  myDriver2.writeMA(0, 0);
+  myDriver2.writeMB(0, 0);
 }
