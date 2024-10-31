@@ -16,6 +16,7 @@ void loop() {
 
   // // Điều khiển động cơ thứ 1 với tốc độ riêng 50%
   // controlMotor(Motor_FR, clockwise, 50); // Bánh trước trái tiến với tốc độ 50%
+  // moveDiagonalForwardRight(100); 
   delay(1000);
 
   // // Điều khiển động cơ thứ 3 với tốc độ riêng 30%

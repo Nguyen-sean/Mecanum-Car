@@ -112,74 +112,92 @@ void moveSideways_R(uint8_t speed) {
   setMotor4(counter_clockwise, speed);
 }
 
-// Hàm di chuyển chéo
-void moveDiagonal(bool direct, bool side) {
-  if (side == 0) {  // left
-    if (direct) {
-      setMotor1(direct, 0);
-      setMotor3(direct, 0);
-      setMotor2(direct, speed);
-      setMotor4(direct, speed);
-    } else {
-      setMotor2(direct, 0);
-      setMotor4(direct, 0);
-      setMotor1(direct, speed);
-      setMotor3(direct, speed);
-    }
-  } else {  // right
-    if (direct) {
-      setMotor2(direct, 0);
-      setMotor4(direct, 0);
-      setMotor1(direct, speed);
-      setMotor3(direct, speed);
-    } else {
-      setMotor1(direct, 0);
-      setMotor3(direct, 0);
-      setMotor2(direct, speed);
-      setMotor4(direct, speed);
-    }
-  }
+void moveSideways_L(uint8_t speed) {
+  setMotor1(counter_clockwise, speed);
+  setMotor2(clockwise, speed);
+  setMotor3(counter_clockwise, speed);
+  setMotor4(clockwise, speed);
+}
+/*************************************************************************/
+/*************************************************************************/
+// Hàm đi chéo về phía trước bên phải
+void moveDiagonalForwardRight(uint8_t speedPercent) {
+  setMotor1(1, speedPercent); // Bánh trước bên trái
+  setMotor2(1, 0);            // Bánh trước bên phải dừng
+  setMotor3(1, 0); // Bánh sau bên trái
+  setMotor4(1, speedPercent);            // Bánh sau bên phải dừng
 }
 
-// Hàm di chuyển vòng cung
-void moveArc(bool direct, bool side, uint8_t arcSpeedPercent) {
-  if (arcSpeedPercent > 100) arcSpeedPercent = 100;
-  if (side == 0) {  // left
-    setMotor2(direct, arcSpeedPercent);
-    setMotor3(direct, arcSpeedPercent);
-    setMotor1(direct, 0);
-    setMotor4(direct, 0);
-  } else {  // right
-    setMotor1(direct, arcSpeedPercent);
-    setMotor4(direct, arcSpeedPercent);
-    setMotor2(direct, 0);
-    setMotor3(direct, 0);
-  }
+// Hàm đi chéo về phía trước bên trái
+void moveDiagonalForwardLeft(uint8_t speedPercent) {
+  setMotor1(1, 0);            // Bánh trước bên trái dừng
+  setMotor2(1, speedPercent); // Bánh trước bên phải
+  setMotor3(1, speedPercent);            // Bánh sau bên trái dừng
+  setMotor4(1, 0); // Bánh sau bên phải
 }
 
-// Hàm xoay tại chỗ
-void rotate(bool side, uint8_t rotateSpeedPercent) {
-  if (rotateSpeedPercent > 100) rotateSpeedPercent = 100;
-  setMotor1(side, rotateSpeedPercent);
-  setMotor2(!side, rotateSpeedPercent);
-  setMotor3(!side, rotateSpeedPercent);
-  setMotor4(side, rotateSpeedPercent);
+// Hàm đi chéo về phía sau bên phải
+void moveDiagonalBackwardRight(uint8_t speedPercent) {
+  setMotor1(0, 0);            // Bánh trước bên trái dừng
+  setMotor2(0, speedPercent); // Bánh trước bên phải
+  setMotor3(0, speedPercent);            // Bánh sau bên trái dừng
+  setMotor4(0, 0); // Bánh sau bên phải
 }
 
-// Hàm xoay 45 đến 135 độ
-void rotatePartial(bool wd, bool side, uint8_t partialSpeedPercent) {
-  if (partialSpeedPercent > 100) partialSpeedPercent = 100;
-  if (wd == 1) {  // front
-    setMotor1(side, partialSpeedPercent);
-    setMotor2(!side, partialSpeedPercent);
-    setMotor3(side, 0);
-    setMotor4(!side, 0);
-  } else {  // back
-    setMotor3(side, partialSpeedPercent);
-    setMotor4(!side, partialSpeedPercent);
-    setMotor1(!side, 0);
-    setMotor2(side, 0);
-  }
+// Hàm đi chéo về phía sau bên trái
+void moveDiagonalBackwardLeft(uint8_t speedPercent) {
+  setMotor1(0, speedPercent); // Bánh trước bên trái
+  setMotor2(0, 0);            // Bánh trước bên phải dừng
+  setMotor3(0, 0); // Bánh sau bên trái
+  setMotor4(0, speedPercent);            // Bánh sau bên phải dừng
+}
+
+// // Hàm đi vòng cung về phía trước bên trái
+// void moveArcForwardLeft(uint8_t speedPercent) {
+//   setMotor2(1, speedPercent); // Bánh trước bên phải
+//   setMotor3(1, speedPercent); // Bánh sau bên trái
+//   setMotor1(1, 0);            // Bánh trước bên trái dừng
+//   setMotor4(1, 0);            // Bánh sau bên phải dừng
+// }
+
+// // Hàm đi vòng cung về phía trước bên phải
+// void moveArcForwardRight(uint8_t speedPercent) {
+//   setMotor1(1, speedPercent); // Bánh trước bên trái
+//   setMotor4(1, speedPercent); // Bánh sau bên phải
+//   setMotor2(1, 0);            // Bánh trước bên phải dừng
+//   setMotor3(1, 0);            // Bánh sau bên trái dừng
+// }
+
+// // Hàm đi vòng cung về phía sau bên trái
+// void moveArcBackwardLeft(uint8_t speedPercent) {
+//   setMotor3(0, speedPercent); // Bánh sau bên trái
+//   setMotor2(0, speedPercent); // Bánh trước bên phải
+//   setMotor1(0, 0);            // Bánh trước bên trái dừng
+//   setMotor4(0, 0);            // Bánh sau bên phải dừng
+// }
+
+// // Hàm đi vòng cung về phía sau bên phải
+// void moveArcBackwardRight(uint8_t speedPercent) {
+//   setMotor1(0, speedPercent); // Bánh trước bên trái
+//   setMotor4(0, speedPercent); // Bánh sau bên phải
+//   setMotor2(0, 0);            // Bánh trước bên phải dừng
+//   setMotor3(0, 0);            // Bánh sau bên trái dừng
+// }
+
+// Hàm xoay tại chỗ theo chiều kim đồng hồ
+void rotateClockwise(uint8_t speedPercent) {
+  setMotor1(1, speedPercent);
+  setMotor2(0, speedPercent);
+  setMotor3(1, speedPercent);
+  setMotor4(0, speedPercent);
+}
+
+// Hàm xoay tại chỗ ngược chiều kim đồng hồ
+void rotateCounterClockwise(uint8_t speedPercent) {
+  setMotor1(0, speedPercent);
+  setMotor2(1, speedPercent);
+  setMotor3(0, speedPercent);
+  setMotor4(1, speedPercent);
 }
 
 // Hàm dừng xe
