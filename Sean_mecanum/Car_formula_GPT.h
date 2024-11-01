@@ -4,7 +4,7 @@ Makerlabvn_I2C_Motor_Driver myDriver1(0);
 Makerlabvn_I2C_Motor_Driver myDriver2(1);
 
 #define CONFIG_Motor_1 0.85
-#define CONFIG_Motor_2 0.8
+#define CONFIG_Motor_2 0.75
 #define CONFIG_Motor_3 1
 #define CONFIG_Motor_4 0.75
 
@@ -103,10 +103,10 @@ void moveStraight_F(uint8_t speed) {
 }
 
 void moveStraight_B(uint8_t speed) {
-  setMotor1(counter_clockwise, speed);
-  setMotor2(counter_clockwise, speed);
+  setMotor1(counter_clockwise, speed*0.85);
+  setMotor2(counter_clockwise, speed*0.88 );
   setMotor3(counter_clockwise, speed);
-  setMotor4(counter_clockwise, speed);
+  setMotor4(counter_clockwise, speed*0.78);
 }
 
 /*************************************************************************/
@@ -114,15 +114,15 @@ void moveStraight_B(uint8_t speed) {
 // Hàm di chuyển ngang (trái hoặc phải)
 
 void moveSideways_R(uint8_t speed) {
-  setMotor1(clockwise, speed);
-  setMotor2(counter_clockwise, speed);
+  setMotor1(clockwise, speed*0.9);
+  setMotor2(counter_clockwise, speed*1.05);
   setMotor3(counter_clockwise, speed);
-  setMotor4(clockwise, speed);
+  setMotor4(clockwise, speed*0.95);
 }
 
 void moveSideways_L(uint8_t speed) {
-  setMotor1(counter_clockwise, speed);
-  setMotor2(clockwise, speed);
+  setMotor1(counter_clockwise, speed*0.9);
+  setMotor2(clockwise, speed*0.9);
   setMotor3(clockwise, speed);
   setMotor4(counter_clockwise, speed);
 }
