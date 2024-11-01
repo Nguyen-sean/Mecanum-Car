@@ -3,6 +3,11 @@
 Makerlabvn_I2C_Motor_Driver myDriver1(0);
 Makerlabvn_I2C_Motor_Driver myDriver2(1);
 
+#define CONFIG_Motor_1 1
+#define CONFIG_Motor_2 0.8
+#define CONFIG_Motor_3 0.98
+#define CONFIG_Motor_4 0.8
+
 /*
 Đây là thứ tự bánh xe
           Đầu xe
@@ -37,22 +42,22 @@ void setSpeed(uint8_t newSpeed) {
 // Hàm điều khiển từng động cơ với tỉ lệ phần trăm từ 0 đến 100
 void setMotor1(bool direct, uint8_t motorSpeedPercent) {
   if (motorSpeedPercent > 100) motorSpeedPercent = 100;
-  myDriver1.writeMA(direct, motorSpeedPercent);
+  myDriver1.writeMA(direct, motorSpeedPercent * CONFIG_Motor_1);
 }
 
 void setMotor2(bool direct, uint8_t motorSpeedPercent) {
   if (motorSpeedPercent > 100) motorSpeedPercent = 100;
-  myDriver2.writeMB(direct, motorSpeedPercent);
+  myDriver2.writeMB(direct, motorSpeedPercent * CONFIG_Motor_2);
 }
 
 void setMotor3(bool direct, uint8_t motorSpeedPercent) {
   if (motorSpeedPercent > 100) motorSpeedPercent = 100;
-  myDriver1.writeMB(direct, motorSpeedPercent);
+  myDriver1.writeMB(direct, motorSpeedPercent * CONFIG_Motor_3);
 }
 
 void setMotor4(bool direct, uint8_t motorSpeedPercent) {
   if (motorSpeedPercent > 100) motorSpeedPercent = 100;
-  myDriver2.writeMA(direct, motorSpeedPercent);
+  myDriver2.writeMA(direct, motorSpeedPercent * CONFIG_Motor_4);
 }
 
 // Hàm điều khiển động cơ theo ID
@@ -65,7 +70,10 @@ motor_1 ---------- motor_2
 -------------------------
 motor_3 ---------- motor_4
 */
+
+
 void controlMotor(uint8_t motorID, bool direct, uint8_t motorSpeedPercent) {
+
   switch (motorID) {
     case 1:
       setMotor1(direct, motorSpeedPercent);
