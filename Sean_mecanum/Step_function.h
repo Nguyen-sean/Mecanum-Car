@@ -1,8 +1,8 @@
 // Các chân điều khiển cuộn dây của động cơ bước
-int motorCoilPin1 = 4; // Cuộn 1
-int motorCoilPin2 = 5; // Cuộn 2
-int motorCoilPin3 = 6; // Cuộn 3
-int motorCoilPin4 = 7; // Cuộn 4
+int motorCoilPin1 = 7; // Cuộn 1
+int motorCoilPin2 = 6; // Cuộn 2
+int motorCoilPin3 = 5; // Cuộn 3
+int motorCoilPin4 = 4; // Cuộn 4
 
 unsigned long lastStepTime = 0; // Thời gian của bước cuối cùng
 int currentStepIndex = 0; // Chỉ số bước hiện tại

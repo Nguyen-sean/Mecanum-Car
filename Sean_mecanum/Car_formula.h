@@ -33,6 +33,12 @@ typedef enum
 // Biến tốc độ toàn cục (từ 0 đến 100%)
 uint8_t speed = 100;
 
+void setup_motor_driver(){
+    myDriver1.begin();
+  myDriver2.begin();
+}
+
+
 // Thiết lập tốc độ từ 0 đến 100%
 void setSpeed(uint8_t newSpeed) {
   if (newSpeed > 100) newSpeed = 100;
@@ -214,4 +220,32 @@ void stop() {
   setMotor2(1, 0);
   setMotor3(1, 0);
   setMotor4(1, 0);
+}
+
+void adjustMotorSpeed(int16_t position) {
+  int16_t error = position - 500;  // 500 là điểm giữa
+
+  // Tốc độ cơ bản của động cơ
+  int16_t baseSpeed = 70;           // Tốc độ cơ bản thấp hơn giới hạn tối đa
+  float Kp = 0.2;                   // Hệ số tỷ lệ để điều chỉnh độ nhạy
+  int16_t correction = Kp * error;  // Tính độ lệch dựa trên sai số
+
+  // Tính tốc độ của mỗi động cơ, đảm bảo không vượt quá 100
+  int16_t leftMotorSpeed = baseSpeed + correction;
+  int16_t rightMotorSpeed = baseSpeed - correction;
+
+  // Giới hạn tốc độ trong khoảng 0 đến 100
+  leftMotorSpeed = constrain(leftMotorSpeed, 0, 100);
+  rightMotorSpeed = constrain(rightMotorSpeed, 0, 100);
+
+  // Hiển thị tốc độ để kiểm tra
+  // Serial.print("Tốc độ động cơ trái: ");
+  // Serial.print(leftMotorSpeed);
+  // Serial.print("\tTốc độ động cơ phải: ");
+  // Serial.println(rightMotorSpeed);
+
+  setMotor1(1, leftSpeed);
+  setMotor2(1, rightSpeed);
+  setMotor3(1, leftSpeed);
+  setMotor4(1, rightSpeed);
 }
