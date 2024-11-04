@@ -239,7 +239,7 @@ void adjustMotorSpeed(int16_t position) {
   int16_t error = position - 500;  // 500 là điểm giữa
 
   // Tốc độ cơ bản của động cơ
-  int16_t baseSpeed = 80;           // Tốc độ cơ bản thấp hơn giới hạn tối đa
+  int16_t baseSpeed = 100;           // Tốc độ cơ bản thấp hơn giới hạn tối đa
   float Kp = 0.2;                   // Hệ số tỷ lệ để điều chỉnh độ nhạy
   int16_t correction = Kp * error;  // Tính độ lệch dựa trên sai số
 
