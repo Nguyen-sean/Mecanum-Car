@@ -123,15 +123,28 @@ void loop() {
       analogWrite(11, 0);
       Is_motor180 = false;
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////
+    if (Gamepad.Get_status_button_90D_Right()) {
+      Radius_speed_L = constrain(map(Gamepad.Get_RAD_Joy_L(), 0, 255, 60, 70), 60, 100);
+      DEG_joystick_L = constrain(Gamepad.Get_DEG_Joy_L(), 0, 360);
+      Radius_speed_R = constrain(map(Gamepad.Get_RAD_Joy_R(), 0, 255, 60, 60), 60, 100);
+      DEG_joystick_R = constrain(Gamepad.Get_DEG_Joy_R(), 0, 360);
+    } else {
+      Radius_speed_L = constrain(map(Gamepad.Get_RAD_Joy_L(), 0, 255, 60, 100), 60, 100);
+      DEG_joystick_L = constrain(Gamepad.Get_DEG_Joy_L(), 0, 360);
+      Radius_speed_R = constrain(map(Gamepad.Get_RAD_Joy_R(), 0, 255, 60, 80), 60, 100);
+      DEG_joystick_R = constrain(Gamepad.Get_DEG_Joy_R(), 0, 360);
+    }
+
 
     // Điều khiển chuyển động dựa trên joystick bên phải
-    if (Gamepad.Get_RAD_Joy_R() > 10) {
+    if (Radius_speed_R > 10) {
       if ((DEG_joystick_R >= 315) || (DEG_joystick_R < 45)) {
         rotateClockwise(Radius_speed_R);         // Xoay theo chiều kim đồng hồ
       } else if (DEG_joystick_R >= 135 && DEG_joystick_R < 225) {
         rotateCounterClockwise(Radius_speed_R);  // Xoay ngược chiều kim đồng hồ
       }
-    } else if (Gamepad.Get_RAD_Joy_L() > 10) {
+    } else if (Radius_speed_L > 10) {
       // Điều khiển chuyển động dựa trên joystick bên trái
       if ((DEG_joystick_L >= 315) || (DEG_joystick_L < 45)) {
         moveSideways_R(Radius_speed_L);         // Di chuyển sang phải
