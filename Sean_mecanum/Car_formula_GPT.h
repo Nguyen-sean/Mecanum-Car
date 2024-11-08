@@ -3,10 +3,10 @@
 Makerlabvn_I2C_Motor_Driver myDriver1(0);
 Makerlabvn_I2C_Motor_Driver myDriver2(1);
 
-#define CONFIG_Motor_1 0.8
-#define CONFIG_Motor_2 0.8
+#define CONFIG_Motor_1 1
+#define CONFIG_Motor_2 1
 #define CONFIG_Motor_3 1
-#define CONFIG_Motor_4 0.8
+#define CONFIG_Motor_4 1
 
 /*
 Đây là thứ tự bánh xe
@@ -48,7 +48,7 @@ void setMotor1(bool direct, uint8_t motorSpeedPercent) {
   if (direct) {
     myDriver1.writeMA(direct, motorSpeedPercent * CONFIG_Motor_1);
   } else {
-    myDriver1.writeMA(direct, motorSpeedPercent * CONFIG_Motor_1 * 0.83);
+    myDriver1.writeMA(direct, motorSpeedPercent * CONFIG_Motor_1);
   }
 }
 
@@ -57,7 +57,7 @@ void setMotor2(bool direct, uint8_t motorSpeedPercent) {
   if (direct) {
     myDriver2.writeMB(direct, motorSpeedPercent * CONFIG_Motor_2);
   } else {
-    myDriver2.writeMB(direct, motorSpeedPercent * CONFIG_Motor_2 * 0.97);
+    myDriver2.writeMB(direct, motorSpeedPercent * CONFIG_Motor_2);
   }
 }
 
@@ -75,7 +75,7 @@ void setMotor4(bool direct, uint8_t motorSpeedPercent) {
   if (direct) {
     myDriver2.writeMA(direct, motorSpeedPercent * CONFIG_Motor_4);
   } else {
-    myDriver2.writeMA(direct, motorSpeedPercent * CONFIG_Motor_4 * 0.87);
+    myDriver2.writeMA(direct, motorSpeedPercent * CONFIG_Motor_4);
   }
 }
 
@@ -122,10 +122,10 @@ void moveStraight_F(uint8_t speed) {
 }
 
 void moveStraight_B(uint8_t speed) {
-  setMotor1(counter_clockwise, speed );
-  setMotor2(counter_clockwise, speed );
+  setMotor1(counter_clockwise, speed);
+  setMotor2(counter_clockwise, speed);
   setMotor3(counter_clockwise, speed);
-  setMotor4(counter_clockwise, speed );
+  setMotor4(counter_clockwise, speed);
 }
 
 /*************************************************************************/
@@ -133,16 +133,16 @@ void moveStraight_B(uint8_t speed) {
 // Hàm di chuyển ngang (trái hoặc phải)
 
 void moveSideways_R(uint8_t speed) {
-  setMotor1(clockwise, speed * 0.7);
+  setMotor1(clockwise, speed);
   setMotor2(counter_clockwise, speed);
   setMotor3(counter_clockwise, speed);
-  setMotor4(clockwise, speed * 0.68);
+  setMotor4(clockwise, speed);
 }
 
 void moveSideways_L(uint8_t speed) {
   setMotor1(counter_clockwise, speed);
-  setMotor2(clockwise, speed*0.75);
-  setMotor3(clockwise, speed*0.75);
+  setMotor2(clockwise, speed);
+  setMotor3(clockwise, speed);
   setMotor4(counter_clockwise, speed);
 }
 /*************************************************************************/
@@ -235,30 +235,53 @@ void stop() {
   setMotor4(1, 0);
 }
 
+int16_t lastError;
 void adjustMotorSpeed(int16_t position) {
   int16_t error = position - 500;  // 500 là điểm giữa
-
   // Tốc độ cơ bản của động cơ
-  int16_t baseSpeed = 100;           // Tốc độ cơ bản thấp hơn giới hạn tối đa
-  float Kp = 0.2;                   // Hệ số tỷ lệ để điều chỉnh độ nhạy
-  int16_t correction = Kp * error;  // Tính độ lệch dựa trên sai số
+  int16_t baseSpeed = 100;  // Tốc độ cơ bản thấp hơn giới hạn tối đa
+  float Kp = 0.2;          // Hệ số tỷ lệ để điều chỉnh độ nhạy
+  float Kd = 0.13;
+  int16_t correction = Kp * error + Kd * (error - lastError);  // Tính độ lệch dựa trên sai số
+  lastError = error;
 
   // Tính tốc độ của mỗi động cơ, đảm bảo không vượt quá 100
   int16_t leftMotorSpeed = baseSpeed + correction;
   int16_t rightMotorSpeed = baseSpeed - correction;
 
   // Giới hạn tốc độ trong khoảng 0 đến 100
-  leftMotorSpeed = constrain(leftMotorSpeed, 0, 100);
-  rightMotorSpeed = constrain(rightMotorSpeed, 0, 100);
+  // leftMotorSpeed = constrain(leftMotorSpeed, 0, 100);
+  // rightMotorSpeed = constrain(rightMotorSpeed, 0, 100);
+
+
+  // leftMotorSpeed = rightMotorSpeed;
+  // rightMotorSpeed = leftMotorSpeed;
 
   // Hiển thị tốc độ để kiểm tra
-  // Serial.print("Tốc độ động cơ trái: ");
-  // Serial.print(leftMotorSpeed);
-  // Serial.print("\tTốc độ động cơ phải: ");
-  // Serial.println(rightMotorSpeed);
 
-  setMotor1(1, leftMotorSpeed);
-  setMotor2(1, rightMotorSpeed);
-  setMotor3(1, leftMotorSpeed);
-  setMotor4(1, rightMotorSpeed);
+
+  if ((sensors[0] <= 100) || (sensors[1] <= 100) ) {
+    // Do something. Maybe this means we're at the edge of a course or about to
+    // fall off a table, in which case we might want to stop moving, back up,
+    // and turn around.
+       digitalWrite(13, LOW);
+    // return;
+  }
+
+  if (leftMotorSpeed < 0) {
+    setMotor1(0, leftMotorSpeed);
+    setMotor2(1, rightMotorSpeed);
+    setMotor3(0, leftMotorSpeed);
+    setMotor4(1, rightMotorSpeed);
+  } else if (rightMotorSpeed < 0) {
+    setMotor1(1, leftMotorSpeed);
+    setMotor2(0, rightMotorSpeed);
+    setMotor3(1, leftMotorSpeed);
+    setMotor4(0, rightMotorSpeed);
+  } else {
+    setMotor1(1, leftMotorSpeed);
+    setMotor2(1, rightMotorSpeed);
+    setMotor3(1, leftMotorSpeed);
+    setMotor4(1, rightMotorSpeed);
+  }
 }

@@ -14,10 +14,10 @@ void setup_line_follow() {
   // delay(20);
   // }
   qtr.calibrationOn.minimum[0] = 462;  // trái
-  qtr.calibrationOn.maximum[0] = 702;
+  qtr.calibrationOn.maximum[0] = 792;
 
   qtr.calibrationOn.minimum[1] = 446;  // phải
-  qtr.calibrationOn.maximum[1] = 705;
+  qtr.calibrationOn.maximum[1] = 795;
 }
 int16_t read_line_Black() {
   return qtr.readLineBlack(sensors);
